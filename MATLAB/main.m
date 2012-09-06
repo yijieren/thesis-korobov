@@ -8,11 +8,11 @@ clc
 %% Parameters
 
 % Dimensions
-s=10;
+s=2;
 % Number of Points = 2^N
 N=5;
 % Max value of N for testing
-maxi = 10;
+maxi = 6;
 % Plotting
 plotting=true;
 
@@ -99,6 +99,8 @@ for s=2:10
         plot(mkorobov3,'co','MarkerFaceColor','c','MarkerSize',5)
         set(gca,'YScale','log')
         grid on
-        legend('Random','Sobol','Korobov 1','Korobov 2','Korobov 3')
+        if(s==2)
+            legend('Random','Sobol','Korobov 1','Korobov 2','Korobov 3')
+        end
     end
 end

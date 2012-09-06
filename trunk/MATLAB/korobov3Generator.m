@@ -6,8 +6,7 @@ function coefficients = korobov3Generator(s,n)
 
 % Initialization
 a=uint32(ones(s,1));
-a(1)=bitset(a(1),n,1);
-for i=1:s,
+for i=2:s,
     % varying the bits one after another per dimension.
     for v=2:n,
         atemp=bitset(a(i),v,1);

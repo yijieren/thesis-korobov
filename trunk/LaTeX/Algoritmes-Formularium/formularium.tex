@@ -1,0 +1,169 @@
+
+% Created 2011-10-27 do 16:51
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+%\usepackage{marvosym}
+%\usepackage{wasysym}
+%\usepackage{latexsym}
+%\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{placeins}
+\usepackage{pict2e}
+\usepackage{subfig}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+%\usepackage{cmbright}
+\usepackage[dutch]{babel}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+ \hyphenpenalty=5000
+\tolerance=1000
+\providecommand{\alert}[1]{\textbf{#1}}
+\newfloat{MATLAB code}{h}{}
+\usepackage{tikz,pgfplots}
+
+\pgfplotsset{compat=newest}
+\pgfplotsset{plot coordinates/math parser=false}
+
+
+
+
+\title{Beschrijving Algoritmes}
+\author{Roel Matthysen - \today}
+\date{}
+
+\newlength\figureheight
+\newlength\figurewidth
+\setlength\figureheight{2cm}
+\setlength\figurewidth{12cm}
+
+
+\begin{document}
+
+\maketitle
+
+\section*{Algemene structuur}
+\begin{equation}
+\begin{matrix}
+z_{1n} & z_{1n-1} & \cdots & z_{11} \\
+z_{2n} &  &  &  \\
+\vdots & & \ddots & \vdots \\
+z_{sn}& & \cdots  & z_{s1} \\
+\end{matrix}
+\mbox{\hspace{50pt}}
+\begin{matrix}
+a_{1n} & a_{1n-1} & \cdots & a_{11} \\
+a_{2n} &  &  &  \\
+\vdots & & \ddots & \vdots \\
+a_{sn}& & \cdots  & a_{s1} \\
+\end{matrix}
+\end{equation}
+\begin{itemize}
+\item Het aantal kolommen $n$ duidt op het aantal punten $p=2^n$
+\item Het aantal rijen $s$ is het aantal dimensies
+\item De getallen $a_{1n},...,a_{sn}$ zijn de generatoren modulo $2^n$
+\item De getallen $z_{i1},...,z_{ij}$ zijn de coeffici\"enten in de binaire voorstelling van $a_{ij}$, \begin{equation}
+a_{ij}=a_{ij-1}+z_{ij}*2^{j-1} \end{equation}
+\item Notatie bij de kleurcodes in de algoritmen: 
+\begin{itemize}
+\item \textcolor{RubineRed}{$a_{ij}$} staat voor de elementen die reeds gekend zijn 
+\item \textcolor{blue}{$a_{ij}$} staat voor de elementen die in de huidige stap gevari\"eerd worden als $a_{ij}=a_{ij-1}+z_{ij}*2^{j-1}$ met $z_{ij}$ 0 of 1.
+\item \textcolor{Emerald}{$a_{ij}$} staat voor de elementen die in de huidige stap als gekende waarde expliciet in de gewichtsfunctie nodig zijn. Voor de berekening van de gewichtsfunctie zijn dus enkel de blauwe en groene elementen nodig.
+\end{itemize}
+\end{itemize}
+\clearpage
+\section{Algoritme 1}
+\begin{itemize}
+\item Initialiseer kolom 1 op 1 voor elke dimensie
+\item Itereer over de kolommen met index $v=2..n$
+\item Voor kolom $v$: evalueer de gewichtsfunctie
+\begin{equation}
+h_v(x_1,x_2,...,x_s)=\frac{1}{2^v}\sum_{m=1}^{2^v}{}^*\left(2n-2v+\frac{1}{||mx_1/2^v||}\right)\cdots\left(2n-2v+\frac{1}{||mx_s/2^v||}\right)
+\end{equation}
+voor elke mogelijke ${h_v(a_{1v-1}+2^{v-1}z_{1v},...,a_{sv-1}+2^{v-1}z_{sv})}$ waarbij de $z_{iv}$ onafhankelijk de waarde 0 of 1 kunnen aannemen. Kies voor de configuratie waarbij $h_v$ minimaal wordt.
+\item Structuur:
+\begin{equation}
+\begin{array}{llllll}
+\multicolumn{6}{c}{\xleftarrow{\mbox{\hspace{50pt}}v=2,...,n\mbox{\hspace{50pt}}}} \\
+a_{1n} & \cdots & \mbox{\textcolor{Blue}{$a_{1v}$}} & \mbox{\textcolor{RubineRed}{$a_{1v-1}$}} & \cdots & \mbox{\textcolor{RubineRed}{$1$}} \\
+a_{2n} & \cdots & \mbox{\textcolor{Blue}{$a_{2v}$}} & \mbox{\textcolor{RubineRed}{$a_{2v-1}$}} & \cdots & 
+\mbox{\textcolor{RubineRed}{$1$}} \\
+\vdots & & \vdots & \vdots & \ddots & \vdots \\
+a_{sn} & \cdots & \mbox{\textcolor{Blue}{$a_{sv}$}} & \mbox{\textcolor{RubineRed}{$a_{sv-1}$}} & \cdots &
+\mbox{\textcolor{RubineRed}{$1$}} \\
+\end{array}
+\end{equation}
+\end{itemize}
+\section{Algoritme 2}
+\begin{itemize}
+\item Initialiseer kolom 1 op 1 voor elke dimensie
+\item Itereer over de kolommen met index $v=2..n$ 
+\item Itereer over de rijen met index $r = 1..s$
+\item Voor kolom $v$ en rij $s$: evalueer de gewichtsfunctie 
+\begin{equation}
+h_{rv}(x_1,x_2,...,x_s)=\frac{1}{2^v}\sum_{m=1}^{2^v}{}^*\prod_{j=1}^r\left(2n-2v+\frac{1}{||mx_j/2^v||}\right)\prod_{j=r+1}^s\left(2n-2v+2+\frac{1}{||mx_j/2^{v-1}||}\right)
+\end{equation}
+voor $h_{rv}(a_{1v},...,a_{r-1v},a_{rv-1}+2^{v-1}z_{rv},a_{r+1v-1},...,a_{sv-1})$ waarbij $z_{rv}$ de waarden 0 en 1 aanneemt. Kies de waarde waarbij $h_{rv}$ minimaal wordt.
+\item Structuur:
+\begin{equation}
+\begin{array}{lllllll}
+\multicolumn{7}{c}{\xleftarrow{\mbox{\hspace{75pt}}v=2,...,n\mbox{\hspace{75pt}}}} \\
+a_{1n} & \cdots & \mbox{\textcolor{Emerald}{$a_{1v}$}} & \mbox{\textcolor{RubineRed}{$a_{1v-1}$}} & \cdots & \mbox{\textcolor{RubineRed}{$1$}} & \multirow{7}{*}{\rotatebox{270}{$\xrightarrow{\mbox{\hspace{30pt}}r=1,..,s\mbox{\hspace{30pt}}}$}}\\
+\vdots & & \vdots & \vdots & \ddots & \vdots & \\
+a_{r-1n} & \cdots & \mbox{\textcolor{Emerald}{$a_{r-1v}$}} & \mbox{\textcolor{RubineRed}{$a_{r-1v-1}$}} & \cdots & 
+\mbox{\textcolor{RubineRed}{$1$}} & \\
+a_{rn} & \cdots & \mbox{\textcolor{Blue}{$a_{rv}$}} & \mbox{\textcolor{RubineRed}{$a_{rv-1}$}} & \cdots & 
+\mbox{\textcolor{RubineRed}{$1$}} & \\
+a_{r+1n} & \cdots & a_{r+1v} & \mbox{\textcolor{Emerald}{$a_{r+1v-1}$}} & \cdots & 
+\mbox{\textcolor{RubineRed}{$1$}} & \\
+\vdots & & \vdots & \vdots & \ddots & \vdots & \\
+a_{sn} & \cdots & a_{sv}& \mbox{\textcolor{Emerald}{$a_{sv-1}$}} & \cdots &
+\mbox{\textcolor{RubineRed}{$1$}} & \\
+\end{array}
+\end{equation}
+
+\end{itemize}
+\clearpage
+\section{Algoritme 3}
+\begin{itemize}
+\item Initialiseer $a_{1n}$ op 1 (dus $a_{1n-1},...,a_{11}$ zijn per definitie ook 1)
+\item Itereer over de rijen met index $r=2,...,s$, en initialiseer $a_{r1}$ op 1
+\item Itereer over de kolommen met index $v=1,...,n$
+\item Voor kolom $v$ en rij $s$: evalueer de gewichtsfunctie
+\begin{equation}
+h_{rv}(x)= \sum_{k=v}^n\frac{1}{2^{k-v}} \sum_{m=1}^{2^k}{}^*\ln{\frac{1}{\sin^2{\pi(ma_{1n}/2^k)}}}\cdots\ln{\frac{1}{\sin^2{\pi(ma_{r-1n}/2^k)}}}\ln{\frac{1}{\sin^2{\pi(mx/2^v)}}}
+\end{equation}
+voor $h_{rv}(a_{rv-1}+2^{v-1}z_{rv})$ waarbij $z_{rv}$ de waarden 0 en 1 aanneemt. Kies de waarde waarbij $h_{rv}$ minimaal wordt.
+\item Structuur
+\begin{equation}
+\begin{array}{lllllll}
+\multicolumn{7}{c}{\xleftarrow{\mbox{\hspace{75pt}}v=1,...,n\mbox{\hspace{75pt}}}} \\
+\mbox{\textcolor{Emerald}{$1$}} & \cdots & \mbox{\textcolor{RubineRed}{$1$}} & \mbox{\textcolor{RubineRed}{$1$}} & \cdots & \mbox{\textcolor{RubineRed}{$1$}} & \multirow{7}{*}{\rotatebox{270}{$\xrightarrow{\mbox{\hspace{30pt}}r=2,..,s\mbox{\hspace{30pt}}}$}}\\
+\mbox{\textcolor{Emerald}{$a_{2n}$}} & \cdots & \mbox{\textcolor{RubineRed}{$a_{2v}$}} & \mbox{\textcolor{RubineRed}{$a_{2v-1}$}} & \cdots & 
+\mbox{\textcolor{RubineRed}{$1$}} & \\
+\vdots & & \vdots & \vdots & \ddots & \vdots & \\
+\mbox{\textcolor{Emerald}{$a_{r-1n}$}} & \cdots & \mbox{\textcolor{RubineRed}{$a_{r-1v}$}} & \mbox{\textcolor{RubineRed}{$a_{r-1v-1}$}} & \cdots & 
+\mbox{\textcolor{RubineRed}{$1$}} & \\
+a_{rn} & \cdots & \mbox{\textcolor{Blue}{$a_{rv}$}} & \mbox{\textcolor{RubineRed}{$a_{rv-1}$}} & \cdots & 
+\mbox{\textcolor{RubineRed}{$1$}} & \\
+\vdots & & \vdots & \vdots & \ddots & \vdots & \\
+a_{sn} & \cdots & a_{sv}& a_{sv-1} & \cdots & 1 & \\
+\end{array}
+\end{equation}
+\end{itemize}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

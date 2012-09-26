@@ -11,9 +11,9 @@ for v=2:N,
     for i=1:s,
         atemp=a;
         atemp(i)=bitset(atemp(i),v,1);
-        k1=korobov2H(a,i,s,v);
-        k2=korobov2H(atemp,i,s,v);
-        if(korobov2H(a,i,s,v)>korobov2H(atemp,i,s,v))
+        k1=korobov2H(a,i,v,N);
+        k2=korobov2H(atemp,i,v,N);
+        if(korobov2H(a,i,v,N)>korobov2H(atemp,i,v,N))
             a(i)=atemp(i);
         end
     end

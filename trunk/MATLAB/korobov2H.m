@@ -16,9 +16,8 @@ for m=1:2:2^v,
     for i=r+1:s,
         factor=factor*(2*n-2*v+2+1/(frac(m*double(a(i))/2^(v-1))));
     end
-    term=term+factor;
+    term=term+factor/2^v;
 end
-term = term/2^v;
         
         
         

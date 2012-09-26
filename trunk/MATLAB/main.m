@@ -10,15 +10,15 @@ clc
 % Dimensions
 s=2;
 % Number of Points = 2^N
-N=5;
+N=3;
 % Max value of N for testing
-maxi = 6;
+maxi = 12;
 % Plotting
 plotting=true;
 
 %% Execution - Compute Generator
 % generator g
-g = korobov3Generator(s,N);
+g = korobov2Generator(s,N);
 
 
 
@@ -33,6 +33,7 @@ if(s==3 && plotting)
     plotCoefficients3D(g,N)
     axis square
 end
+%saveEps('../LaTeX/Verslag1/img/2dimensions4points.eps',8,8)
 
 %% Execution - Compute Bernouilli integral using multiple point sets
 % some plotting
@@ -92,15 +93,19 @@ for s=2:10
     %% Plotting the results
     if(plotting)
         hold all
-        plot(mrandom,'mo','MarkerFaceColor','m')
-        plot(msobol,'go','MarkerSize',11,'MarkerFaceColor','g')
-        plot(mkorobov1,'ro','MarkerFaceColor','r')
-        plot(mkorobov2,'ko','MarkerFaceColor','k','MarkerSize',7)
-        plot(mkorobov3,'co','MarkerFaceColor','c','MarkerSize',5)
+        %plot(mrandom,'mo','MarkerFaceColor','m')
+        plot(msobol,'go','MarkerSize',9,'MarkerFaceColor','g')
+        plot(mkorobov1,'ro','MarkerFaceColor','r','MarkerSize',7)
+        plot(mkorobov2,'ko','MarkerFaceColor','k','MarkerSize',5)
+        plot(mkorobov3,'co','MarkerFaceColor','c','MarkerSize',3)
+        xlabel('#points = 2^n')
         set(gca,'YScale','log')
         grid on
+        axis([0 maxi 10^(-10) 10])
         if(s==2)
-            legend('Random','Sobol','Korobov 1','Korobov 2','Korobov 3')
+            legend('Sobol','Korobov 1','Korobov 2','Korobov 3')
         end
     end
 end
+pwd
+saveEps('../LaTeX/Verslag1/img/korobov3algorithms.eps',21,21);

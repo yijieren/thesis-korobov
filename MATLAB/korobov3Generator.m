@@ -10,7 +10,7 @@ for i=2:s,
     % varying the bits one after another per dimension.
     for v=2:n,
         atemp=bitset(a(i),v,1);
-        if(korobov3H(a(i),a,i,s,v)>korobov3H(atemp,a,i,s,v))
+        if(korobov3H(a(i),a,i,v,n)>korobov3H(atemp,a,i,v,n))
             a(i)=atemp;
         end
     end

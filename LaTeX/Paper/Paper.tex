@@ -22,6 +22,7 @@
 \usepackage{subfig}
 \usepackage{color}
 \usepackage{multirow}
+\usepackage{cite}
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 %\usepackage{cmbright}
 \usepackage[english]{babel}
@@ -127,22 +128,58 @@ we get for $v\ge2$ that
 H_v &\le \sum_{k=1}^{v-2} \sum_{m=1}^{2^k} {}^*\frac{1}{||ma_{1k}/2^k|| \cdots ||ma_{sk}/2^k||}+2^{v-1}h_{v-1}+(2^{n+1}-2^v)h_v \\
 &\le \sum_{k=1}^{v-2} \sum_{m=1}^{2^k} {}^*\frac{1}{||ma_{1k}/2^k|| \cdots ||ma_{sk}/2^k||}+(2^{n+1}-2^{v-1})h_{v-1}=H_{v-1}
 \end{align*}
-\comm{De eerste lijn volgt uit het weglaten van $k=v-1$ uit de sommatie. De tweede lijn volgt dan uit het feit dat $h_v\le h_{v-1}$. NOTA: mijns inziens zou de gelijkheid in de eerste lijn enkel opgaan in het geval $v=n+1$}
+\comm{De eerste lijn volgt uit het weglaten van $k=v-1$ uit de sommatie. De tweede lijn volgt dan uit het feit dat $h_v\le h_{v-1}$. NOTA: mijns inziens zou de gelijkheid in de eerste lijn enkel opgaan in het geval $v=n+1$. De tweede ongelijkheid komt wel voor uit de vorige resultaten.}
 
 and, consequently
 \begin{equation}
+\label{eqn:3}
 H_n \le H_{n-1} \le \cdots \le H_1 < (2n)^s2^n
 \end{equation}
 According to the definition of $a_j$ and $a_{jk}$,
 \begin{equation*}
-a_1 \equiv a_{1k},\dots,a_s \equiv a_{sk}\mbox{\hspace{12pt}} (\mod{2^k})
+a_1 \equiv a_{1k},\dots,a_s \equiv a_{sk}\mbox{\hspace{12pt}} \pmod{2^k}
 \end{equation*}
 for $k=1,\dots,n$. But then it is obvious that
 \begin{align*}
 &\sum_{m=1}^{2^n-1}\frac{1}{||ma_{1}/2^n|| \cdots ||ma_{s}/2^n||} = \sum_{k=1}^n\sum_{m=1}^{2^k}{}^*\frac{1}{||ma_{1}/2^k|| \cdots ||ma_{s}/2^k||}\\
+&\mbox{\comm{$\frac{1}{2^n},\frac{2}{2^n},...,\frac{2^{n-1}-1}{2^n} = \frac{1}{2},\frac{1}{4},\frac{3}{4},\frac{1}{8},\frac{3}{8},\frac{5}{8},...$}} \\
 =&\sum_{k=1}^{n-1}\sum_{m=1}^{2^k}{}^*\frac{1}{||ma_{1k}/2^k|| \cdots ||ma_{sk}/2^k||}+\sum_{m=1}^{2^n}{}^*\frac{1}{||ma_{1n}/2^n|| \cdots ||ma_{sn}/2^n||}=H_n
 \end{align*}
+\comm{De eerste gelijkheid volgt uit het afsplitsen van de term voor $k=n$. De eerste term past dan rechtstreeks in de definitie van $H_n$, de tweede term komt overeen met $(2^{n+1}-2^n)h_n=2^nh_n=\sum_{m=1}^{2^n}{}^*\frac{1}{||ma_{1n}/2^n|| \cdots ||ma_{sn}/2^n||}$}
+Hence by (\ref{eqn:3}),
+\begin{equation}
+\label{eqn:4}
+\sum_{m=1}^{2^n-1}\frac{1}{||ma_{1}/2^n|| \cdots ||ma_{s}/2^n||} < (2n)^s2^n
+\end{equation}
+\comm{NOTA: voor $m=2^n$ wordt de noemer gelijk aan 0!}
+We determine $b$ and $b_2,\dots,b_s$ with the help of the congruences
+\begin{equation*}
+a_1b\equiv 1, a_2b \equiv b_2 , \dots, a_sb \equiv b_s  \pmod{2^n}
+\end{equation*}
+\comm{De vergelijkingen zijn altijd oplosbaar want $a_i$ is oneven en dus inverteerbaar in de groep mod $2^n$. NOTA: Dits is geen stelsel, nadat $b$ bepaald is uit de eerste vergelijking kunnen alle $b_i$'s afzonderlijk bepaald worden. }
+Then from (\ref{eqn:4}) it follows that
+\comm{Voor de functie $f(x)=||x/2^n||$ geldt dat $x = x\pmod{2^n}$. In de groep mod $2^n$ is $b=a_1^{-1}$ een eenduidig bepaald oneven geheel getal. Vermenigvuldiging van de gehele getallen modulo $2^n$ met $b$ levert een permutatie op van de gehele getallen modulo $2^n$. In de sommatie \ref{eqn:4} kan $m$ overal vervangen worden door $bm$, enkel de volgorde van de sommatie wordt dan omgewisseld.}
+\begin{align*}
+&\sum_{m=1}^{2^n-2}\frac{1}{||m/2^n||\cdot||b_2m/2^n|| \cdots ||b_sm/2^n||} < (2n)^s2^n,\\
+&\mbox{\comm{NOTA: Schrijffout? Volgens mij zou de sommatie moeten lopen tot $2^n-1$.}} \\
+&\sum_{m=1}^{2^n-1}\frac{1}{m||b_2m/2^n|| \cdots ||b_sm/2^n||} < (2n)^s,
+\end{align*}
+\comm{Hier wordt gebruikt dat $m\ge2^n||m/2^n||$. In het geval $m\le2^{n-1}$ geldt $||m/2^n||=m/2^n$, in het geval $m>2^{n-1}$ geldt dat $m=2^{n}-b$ met $b<2^{n-1}<m$. Er geldt dan dat $||m/2^n||=||b/2^n||=b/2^n<m/2^n$.}
+and consequently, for $m=1,2,\dots,2^{n-1}$
+\begin{equation*}
+m\left\|\frac{b_2m}{2^n}\right\| \cdots \left\|\frac{b_sm}{2^n}\right\|>\frac{1}{(2n)^s}.
+\end{equation*}
+\comm{Als de ongelijkheid geldt voor de som, geldt ze ook voor de termen apart aangezien alle termen positief zijn.}
+Since $p=2^n$, we have that $2n<3\ln{p}$ and
+\comm{$3\ln{p}=3n\ln{2}=2,0974n$.}
+\begin{equation}
+\label{eqn:5}
+m\left\|\frac{b_2m}{p}\right\| \cdots \left\|\frac{b_sm}{p}\right\|>\frac{1}{3^s\ln^s{p}}, \mbox{\hspace{12pt}}1\le m\le\frac{1}{2}p.
+\end{equation}
+As shown in \cite{korobov1967} (Corollary 2 of Theorem 7), the estimate (\ref{eqn:5}) implies that if $p$ is prime, then $1,b_2,\dots,b_s$ and hence also $a_1,\dots,a_s$, are optimal coefficients modulo $p$. This optimality condition is not hard to extend also to the case when $p$ is a power of a prime number. But then the theorem obviously follows from (\ref{eqn:5}).
 \end{proof}
+\bibliographystyle{plain}
+\bibliography{../library}
 
 \end{document}
 

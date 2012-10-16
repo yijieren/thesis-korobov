@@ -10,7 +10,7 @@ clc
 % Dimensions
 s=2;
 % Number of Points = 2^N
-N=3;
+N=4;
 % Max value of N for testing
 maxi = 10;
 % Plotting
